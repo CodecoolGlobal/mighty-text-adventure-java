@@ -19,7 +19,7 @@ public class Game {
     }
 
     public void run() {
-        Player player = new Player();
+        Player player = new Player(2);
         boolean isRunning = true;
         int rounds = 1;
         int answerCounter = 0;
@@ -55,6 +55,12 @@ public class Game {
         }
     }
 
+    private void areaChallenge(int areaIndex){
+        System.out.println(areas[areaIndex].description());
+        System.out.println(areas[areaIndex].getWelcomeTo());
+        System.out.println(areas[areaIndex].getQuestion());
+        System.out.println(areas[areaIndex].getAnswersOptions());
+    }
 
     private boolean step() {
         display.printMessage("Steps");
