@@ -1,6 +1,6 @@
 package com.codecool.mightytextadventure.data;
 
-public class Player {
+public class Player{
 
     public Player(int lives){
         this.lives = lives;
@@ -21,9 +21,6 @@ public class Player {
     public void looseOneLives(){
         lives--;
     }
-
-
-
 
 
 
