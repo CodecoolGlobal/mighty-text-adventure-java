@@ -17,6 +17,7 @@ public class Application {
         Game game = new Game(areas, input, display);
         game.run();
 
+
         display.printMessage("Exiting from Mighty Text Adventure!");
     }
 
