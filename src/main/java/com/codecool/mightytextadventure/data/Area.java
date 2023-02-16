@@ -45,10 +45,10 @@ public class Area {
 
 
     public boolean answerOneIsCorrect(String answer){
-        return answer.equals(question1.correctAnswer);
+        return answer.toLowerCase().equals(question1.correctAnswer.toLowerCase());
     }
     public boolean answerTwoIsCorrect(String answer){
-        return answer.equals(question2.correctAnswer);
+        return answer.toLowerCase().equals(question2.correctAnswer.toLowerCase());
     }
 
 }
