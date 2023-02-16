@@ -2,64 +2,82 @@ package com.codecool.mightytextadventure.logic;
 
 import com.codecool.mightytextadventure.data.Area;
 import com.codecool.mightytextadventure.data.Player;
+import com.codecool.mightytextadventure.data.Route;
 import com.codecool.mightytextadventure.ui.Display;
-import com.codecool.mightytextadventure.ui.Input;
+import com.codecool.mightytextadventure.ui.InputInteger;
+import com.codecool.mightytextadventure.ui.InputString;
 
 public class Game {
     private final Area[] areas;
-    private final Input input;
+    private final InputString inputString;
+
+    private final InputInteger inputInteger;
     private final Display display;
 
     public String playersName;
 
-    public Game(Area[] areas, Input input, Display display) {
+    public Game(Area[] areas, InputString inputString, InputInteger inputInteger, Display display) {
         this.areas = areas;
-        this.input = input;
+        this.inputString = inputString;
+        this.inputInteger = inputInteger;
         this.display = display;
+
     }
 
     public void run() {
         Player player = new Player(2);
+
         boolean isRunning = true;
         int rounds = 1;
         int answerCounter = 0;
-        boolean answerIsCorrect = false;
+        boolean onTheWay = false;
+        int routeIndex = 0;
 
         while (isRunning) {
-          //  isRunning = step();
+
             printWelcomeToGame();
-            System.out.println("Welcome To Tripico Adventure Game!\nPlease enter your name:");
-            player.setName(input.getInputFromUser());
+            System.out.println("Please enter your name:");
+            player.setName(inputString.getInputFromUser());
+            System.out.println(player.getName() + " choose where u like to travel:");
 
-            if(rounds == 1){
 
-                while(!answerIsCorrect) {
-                    System.out.println(areas[0].description());
-                    System.out.println(areas[0].getWelcomeTo());
-                    System.out.println(areas[0].getQuestion());
-                    System.out.println(areas[0].getAnswersOptions());
-                    answerIsCorrect =  areas[0].answerIsCorrect(input.getInputFromUser());
+
+            for (int i = 0;i < areas.length; i++) {
+                if(i==0){
+                    System.out.println();
+                    continue;
                 }
+                System.out.println("          " + (i) + ":  " + areas[i].description() +"      ");
             }
-                answerIsCorrect = false;
 
-                while(!answerIsCorrect) {
-                    System.out.println(areas[1].description());
-                    System.out.println(areas[1].getWelcomeTo());
-                    System.out.println(areas[1].getQuestion());
-                    System.out.println(areas[1].getAnswersOptions());
-                    answerIsCorrect = areas[1].answerIsCorrect(input.getInputFromUser());
-                    System.out.println(answerIsCorrect);
-                    rounds++;
-}
+            Route route = getChosenRoute(inputInteger.getInputFromUser()-1);
+
+            for(int i = 0;i< route.countries.length;i++){
+
+                areaChallenge(route.countries[i]);
+            }
+
         }
     }
 
-    private void areaChallenge(int areaIndex){
-        System.out.println(areas[areaIndex].description());
-        System.out.println(areas[areaIndex].getWelcomeTo());
-        System.out.println(areas[areaIndex].getQuestion());
-        System.out.println(areas[areaIndex].getAnswersOptions());
+    private boolean areaChallenge(int areaIndex){
+
+        boolean answerIsCorrect = false;
+        int wrongAnswers = 0;
+        while(!answerIsCorrect) {
+
+            System.out.println(areas[areaIndex].getWelcomeTo());
+            System.out.println(areas[areaIndex].getQuestion());
+            System.out.println(areas[areaIndex].getAnswersOptions());
+            answerIsCorrect =  areas[areaIndex].answerIsCorrect(inputString.getInputFromUser());
+            wrongAnswers++;
+            if(wrongAnswers == 2){
+                answerIsCorrect = false;
+            }
+
+        }
+
+        return answerIsCorrect;
     }
 
     private boolean step() {
@@ -83,6 +101,24 @@ public class Game {
                 "                                      ██╔══╝░░██║░░░██║██╔══██╗██║░░██║██╔═══╝░██╔══╝░░\n" +
                 "                                      ███████╗╚██████╔╝██║░░██║╚█████╔╝██║░░░░░███████╗\n" +
                 "                                      ╚══════╝░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚══════╝");
+    }
+
+    public Route getChosenRoute(int routeIndex){
+        Route[] allRoutes = new Route[5];
+
+        Route routeToHungary = new Route(new int []{0,1});
+        Route routeToSerbia = new Route(new int[]{0,1,2});
+        Route routeToSwiss = new Route(new int [] {0,3});
+        Route routeToFrance = new Route(new int [] {0,3,4});
+        Route routeToSpain = new Route(new int[]{0,3,4,5});
+
+        allRoutes[0] = routeToHungary;
+        allRoutes[1] = routeToSerbia;
+        allRoutes[2] = routeToSwiss;
+        allRoutes[3] = routeToFrance;
+        allRoutes[4] = routeToSpain;
+
+        return allRoutes[routeIndex];
     }
 
 }
