@@ -61,7 +61,7 @@ public class Game {
 
             if(areaChallengeCompleted){
                 printWelcomeToHoliday();
-                System.out.println("Do you like to play again?");
+                System.out.println("Do you like to play again then enter yes?");
                 isRunning =  playAgain(inputString.getInputFromUser());
             }
 
@@ -110,7 +110,7 @@ public class Game {
 
     private boolean playAgain(String answer) {
 
-        if(answer.equals("yes")){
+        if(answer.toLowerCase().equals("yes".toLowerCase())){
             return true;
         }
 
