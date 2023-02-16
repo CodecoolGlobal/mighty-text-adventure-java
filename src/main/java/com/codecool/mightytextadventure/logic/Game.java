@@ -31,12 +31,11 @@ public class Game {
 
         while (isRunning) {
 
+            player.cleaningBag();
             printWelcomeToGame();
             System.out.println("Please enter your name:");
             player.setName(inputString.getInputFromUser());
             System.out.println(player.getName() + " choose where u like to travel:");
-
-
 
             for (int i = 0;i < areas.length; i++) {
                 if(i==0){
@@ -50,7 +49,7 @@ public class Game {
 
             for(int i = 0;i< route.countries.length;i++){
 
-                areaChallengeCompleted = areaChallenge(route.countries[i]);
+                areaChallengeCompleted = areaChallenge(route.countries[i],player);
                if(!areaChallengeCompleted){
                   printGameOver();
                    System.out.println("Do you like to play again?");
@@ -61,17 +60,22 @@ public class Game {
 
             if(areaChallengeCompleted){
                 printWelcomeToHoliday();
-                System.out.println("Do you like to play again then enter yes?");
+                System.out.println("Congratulation you have collected a lot of great things!\n");
+                player.printBag();
+                System.out.println("Do you like to play again? Then enter yes!");
                 isRunning =  playAgain(inputString.getInputFromUser());
             }
 
         }
+
     }
 
-    private boolean areaChallenge(int areaIndex){
+    private boolean areaChallenge(int areaIndex,Player player){
 
         boolean areaChallengeComplete = false;
         int wrongAnswers = 0;
+
+
         while(!areaChallengeComplete) {
 
             System.out.println(areas[areaIndex].getWelcomeTo());
@@ -81,7 +85,11 @@ public class Game {
             System.out.println("\n");
 
           if(areaChallengeComplete == false){
+              System.out.println("Thats wrong!  : /");
               wrongAnswers++;
+          }
+          else {
+              System.out.println("Thats right! : )\n");
           }
             if(wrongAnswers == 2){
                 return false;
@@ -104,6 +112,9 @@ public class Game {
                 return false;
             }
         }
+        System.out.println("Congratulation you get a reward for the challenge: " + areas[areaIndex].reward );
+        player.addItemToBag(areas[areaIndex].reward);
+
 
         return true;
     }
@@ -142,7 +153,7 @@ public class Game {
                 "              ██║░░██╗░███████║██╔████╔██║█████╗░░  ██║░░██║╚██╗░██╔╝█████╗░░██████╔╝\n" +
                 "              ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░  ██║░░██║░╚████╔╝░██╔══╝░░██╔══██╗\n" +
                 "              ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗  ╚█████╔╝░░╚██╔╝░░███████╗██║░░██║\n" +
-                "              ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝");
+                "              ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝\n\n");
     }
     private void printWelcomeToGame(){
         System.out.println("\n" +

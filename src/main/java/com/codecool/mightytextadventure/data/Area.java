@@ -2,18 +2,22 @@ package com.codecool.mightytextadventure.data;
 
 public class Area {
 
-     String description;
+    public String description;
+    public String reward;
     private String welcomeTo;
-    private QuestionAndAnswers question1;
-    private QuestionAndAnswers question2;
+    private Question question1;
+    private Question question2;
 
 
 
-    public Area(String description, String welcomeTo, QuestionAndAnswers question1,QuestionAndAnswers question2) {
+
+
+    public Area(String description, String welcomeTo, Question question1, Question question2,String reward) {
         this.welcomeTo =welcomeTo;
         this.description = description;
         this.question1 = question1;
         this.question2 = question2;
+        this.reward = reward;
 
     }
     public String description(){
