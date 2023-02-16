@@ -14,7 +14,7 @@ public class Game {
     private final InputInteger inputInteger;
     private final Display display;
 
-    public String playersName;
+
 
     public Game(Area[] areas, InputString inputString, InputInteger inputInteger, Display display) {
         this.areas = areas;
@@ -26,12 +26,8 @@ public class Game {
 
     public void run() {
         Player player = new Player(2);
-
         boolean isRunning = true;
-        int rounds = 1;
-        int answerCounter = 0;
-        boolean onTheWay = false;
-        int routeIndex = 0;
+        boolean areaChallengeCompleted = false;
 
         while (isRunning) {
 
@@ -54,7 +50,19 @@ public class Game {
 
             for(int i = 0;i< route.countries.length;i++){
 
-                areaChallenge(route.countries[i]);
+                areaChallengeCompleted = areaChallenge(route.countries[i]);
+               if(!areaChallengeCompleted){
+                  printGameOver();
+                   System.out.println("Do you like to play again?");
+                   isRunning =  playAgain(inputString.getInputFromUser());
+                  break;
+               }
+            }
+
+            if(areaChallengeCompleted){
+                printWelcomeToHoliday();
+                System.out.println("Do you like to play again?");
+                isRunning =  playAgain(inputString.getInputFromUser());
             }
 
         }
@@ -62,45 +70,88 @@ public class Game {
 
     private boolean areaChallenge(int areaIndex){
 
-        boolean answerIsCorrect = false;
+        boolean areaChallengeComplete = false;
         int wrongAnswers = 0;
-        while(!answerIsCorrect) {
+        while(!areaChallengeComplete) {
 
             System.out.println(areas[areaIndex].getWelcomeTo());
-            System.out.println(areas[areaIndex].getQuestion());
-            System.out.println(areas[areaIndex].getAnswersOptions());
-            answerIsCorrect =  areas[areaIndex].answerIsCorrect(inputString.getInputFromUser());
+            System.out.println(areas[areaIndex].getQuestionOne());
+            System.out.println(areas[areaIndex].getAnswersOptionsOne());
+            areaChallengeComplete =  areas[areaIndex].answerIsCorrect(inputString.getInputFromUser());
             wrongAnswers++;
             if(wrongAnswers == 2){
-                answerIsCorrect = false;
+                return false;
             }
 
         }
+        areaChallengeComplete = false;
+        wrongAnswers = 0;
 
-        return answerIsCorrect;
-    }
+        while(!areaChallengeComplete) {
 
-    private boolean step() {
-        display.printMessage("Steps");
+            System.out.println(areas[areaIndex].getQuestionTwo());
+            System.out.println(areas[areaIndex].getAnswersOptionsTwo());
+            areaChallengeComplete =  areas[areaIndex].answerIsCorrect(inputString.getInputFromUser());
+            wrongAnswers++;
+            if(wrongAnswers == 2){
+                return false;
+            }
+        }
+
         return true;
     }
 
+    private boolean playAgain(String answer) {
 
+        if(answer.equals("yes")){
+            return true;
+        }
+
+        return false;
+    }
+
+    private void printWelcomeToHoliday(){
+        System.out.println("\n" +
+                "███████╗███╗░░██╗░░░░░██╗░█████╗░██╗░░░██╗  ██╗░░░██╗░█████╗░██╗░░░██╗██████╗░\n" +
+                "██╔════╝████╗░██║░░░░░██║██╔══██╗╚██╗░██╔╝  ╚██╗░██╔╝██╔══██╗██║░░░██║██╔══██╗\n" +
+                "█████╗░░██╔██╗██║░░░░░██║██║░░██║░╚████╔╝░  ░╚████╔╝░██║░░██║██║░░░██║██████╔╝\n" +
+                "██╔══╝░░██║╚████║██╗░░██║██║░░██║░░╚██╔╝░░  ░░╚██╔╝░░██║░░██║██║░░░██║██╔══██╗\n" +
+                "███████╗██║░╚███║╚█████╔╝╚█████╔╝░░░██║░░░  ░░░██║░░░╚█████╔╝╚██████╔╝██║░░██║\n" +
+                "╚══════╝╚═╝░░╚══╝░╚════╝░░╚════╝░░░░╚═╝░░░  ░░░╚═╝░░░░╚════╝░░╚═════╝░╚═╝░░╚═╝\n" +
+                "\n" +
+                "            ██╗░░██╗░█████╗░██╗░░░░░██╗██████╗░░█████╗░██╗░░░██╗\n" +
+                "            ██║░░██║██╔══██╗██║░░░░░██║██╔══██╗██╔══██╗╚██╗░██╔╝\n" +
+                "            ███████║██║░░██║██║░░░░░██║██║░░██║███████║░╚████╔╝░\n" +
+                "            ██╔══██║██║░░██║██║░░░░░██║██║░░██║██╔══██║░░╚██╔╝░░\n" +
+                "            ██║░░██║╚█████╔╝███████╗██║██████╔╝██║░░██║░░░██║░░░\n" +
+                "            ╚═╝░░╚═╝░╚════╝░╚══════╝╚═╝╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░");
+    }
+
+    private void printGameOver(){
+
+        System.out.println("\n" +
+                "              ░██████╗░░█████╗░███╗░░░███╗███████╗  ░█████╗░██╗░░░██╗███████╗██████╗░\n" +
+                "              ██╔════╝░██╔══██╗████╗░████║██╔════╝  ██╔══██╗██║░░░██║██╔════╝██╔══██╗\n" +
+                "              ██║░░██╗░███████║██╔████╔██║█████╗░░  ██║░░██║╚██╗░██╔╝█████╗░░██████╔╝\n" +
+                "              ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░  ██║░░██║░╚████╔╝░██╔══╝░░██╔══██╗\n" +
+                "              ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗  ╚█████╔╝░░╚██╔╝░░███████╗██║░░██║\n" +
+                "              ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝");
+    }
     private void printWelcomeToGame(){
         System.out.println("\n" +
-                "░█████╗░██████╗░██╗░░░██╗███████╗███╗░░██╗████████╗██╗░░░██╗██████╗░███████╗  ████████╗██╗░░██╗██████╗░░█████╗░░██╗░░░░░░░██╗\n" +
-                "██╔══██╗██╔══██╗██║░░░██║██╔════╝████╗░██║╚══██╔══╝██║░░░██║██╔══██╗██╔════╝  ╚══██╔══╝██║░░██║██╔══██╗██╔══██╗░██║░░██╗░░██║\n" +
-                "███████║██║░░██║╚██╗░██╔╝█████╗░░██╔██╗██║░░░██║░░░██║░░░██║██████╔╝█████╗░░  ░░░██║░░░███████║██████╔╝██║░░██║░╚██╗████╗██╔╝\n" +
-                "██╔══██║██║░░██║░╚████╔╝░██╔══╝░░██║╚████║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░  ░░░██║░░░██╔══██║██╔══██╗██║░░██║░░████╔═████║░\n" +
-                "██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗  ░░░██║░░░██║░░██║██║░░██║╚█████╔╝░░╚██╔╝░╚██╔╝░\n" +
-                "╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝  ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░░░╚═╝░░░╚═╝░░\n" +
+                "                ░█████╗░██████╗░██╗░░░██╗███████╗███╗░░██╗████████╗██╗░░░██╗██████╗░███████╗\n" +
+                "                ██╔══██╗██╔══██╗██║░░░██║██╔════╝████╗░██║╚══██╔══╝██║░░░██║██╔══██╗██╔════╝\n" +
+                "                ███████║██║░░██║╚██╗░██╔╝█████╗░░██╔██╗██║░░░██║░░░██║░░░██║██████╔╝█████╗░░\n" +
+                "                ██╔══██║██║░░██║░╚████╔╝░██╔══╝░░██║╚████║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░\n" +
+                "                ██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗\n" +
+                "                ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝\n" +
                 "\n" +
-                "                                      ███████╗██╗░░░██╗██████╗░░█████╗░██████╗░███████╗\n" +
-                "                                      ██╔════╝██║░░░██║██╔══██╗██╔══██╗██╔══██╗██╔════╝\n" +
-                "                                      █████╗░░██║░░░██║██████╔╝██║░░██║██████╔╝█████╗░░\n" +
-                "                                      ██╔══╝░░██║░░░██║██╔══██╗██║░░██║██╔═══╝░██╔══╝░░\n" +
-                "                                      ███████╗╚██████╔╝██║░░██║╚█████╔╝██║░░░░░███████╗\n" +
-                "                                      ╚══════╝░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚══════╝");
+                "████████╗██╗░░██╗██████╗░░█████╗░██╗░░░██╗░██████╗░██╗░░██╗  ███████╗██╗░░░██╗██████╗░░█████╗░██████╗░███████╗\n" +
+                "╚══██╔══╝██║░░██║██╔══██╗██╔══██╗██║░░░██║██╔════╝░██║░░██║  ██╔════╝██║░░░██║██╔══██╗██╔══██╗██╔══██╗██╔════╝\n" +
+                "░░░██║░░░███████║██████╔╝██║░░██║██║░░░██║██║░░██╗░███████║  █████╗░░██║░░░██║██████╔╝██║░░██║██████╔╝█████╗░░\n" +
+                "░░░██║░░░██╔══██║██╔══██╗██║░░██║██║░░░██║██║░░╚██╗██╔══██║  ██╔══╝░░██║░░░██║██╔══██╗██║░░██║██╔═══╝░██╔══╝░░\n" +
+                "░░░██║░░░██║░░██║██║░░██║╚█████╔╝╚██████╔╝╚██████╔╝██║░░██║  ███████╗╚██████╔╝██║░░██║╚█████╔╝██║░░░░░███████╗\n" +
+                "░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚═════╝░░╚═════╝░╚═╝░░╚═╝  ╚══════╝░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚══════╝");
     }
 
     public Route getChosenRoute(int routeIndex){
