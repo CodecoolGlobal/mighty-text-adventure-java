@@ -44,9 +44,11 @@ public class Area {
     }
 
 
-    public boolean answerIsCorrect(String answer){
+    public boolean answerOneIsCorrect(String answer){
         return answer.equals(question1.correctAnswer);
     }
-
+    public boolean answerTwoIsCorrect(String answer){
+        return answer.equals(question2.correctAnswer);
+    }
 
 }

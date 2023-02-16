@@ -25,7 +25,7 @@ public class Game {
     }
 
     public void run() {
-        Player player = new Player(2);
+        Player player = new Player();
         boolean isRunning = true;
         boolean areaChallengeCompleted = false;
 
@@ -77,8 +77,12 @@ public class Game {
             System.out.println(areas[areaIndex].getWelcomeTo());
             System.out.println(areas[areaIndex].getQuestionOne());
             System.out.println(areas[areaIndex].getAnswersOptionsOne());
-            areaChallengeComplete =  areas[areaIndex].answerIsCorrect(inputString.getInputFromUser());
-            wrongAnswers++;
+            areaChallengeComplete =  areas[areaIndex].answerOneIsCorrect(inputString.getInputFromUser());
+            System.out.println("\n");
+
+          if(areaChallengeComplete == false){
+              wrongAnswers++;
+          }
             if(wrongAnswers == 2){
                 return false;
             }
@@ -91,8 +95,11 @@ public class Game {
 
             System.out.println(areas[areaIndex].getQuestionTwo());
             System.out.println(areas[areaIndex].getAnswersOptionsTwo());
-            areaChallengeComplete =  areas[areaIndex].answerIsCorrect(inputString.getInputFromUser());
-            wrongAnswers++;
+            areaChallengeComplete =  areas[areaIndex].answerTwoIsCorrect(inputString.getInputFromUser());
+
+            if(areaChallengeComplete == false){
+                wrongAnswers++;
+            }
             if(wrongAnswers == 2){
                 return false;
             }
@@ -151,7 +158,7 @@ public class Game {
                 "░░░██║░░░███████║██████╔╝██║░░██║██║░░░██║██║░░██╗░███████║  █████╗░░██║░░░██║██████╔╝██║░░██║██████╔╝█████╗░░\n" +
                 "░░░██║░░░██╔══██║██╔══██╗██║░░██║██║░░░██║██║░░╚██╗██╔══██║  ██╔══╝░░██║░░░██║██╔══██╗██║░░██║██╔═══╝░██╔══╝░░\n" +
                 "░░░██║░░░██║░░██║██║░░██║╚█████╔╝╚██████╔╝╚██████╔╝██║░░██║  ███████╗╚██████╔╝██║░░██║╚█████╔╝██║░░░░░███████╗\n" +
-                "░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚═════╝░░╚═════╝░╚═╝░░╚═╝  ╚══════╝░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚══════╝");
+                "░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚═════╝░░╚═════╝░╚═╝░░╚═╝  ╚══════╝░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚══════╝\n\n");
     }
 
     public Route getChosenRoute(int routeIndex){
