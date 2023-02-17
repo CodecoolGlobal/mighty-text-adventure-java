@@ -6,7 +6,6 @@ import com.codecool.mightytextadventure.data.Route;
 import com.codecool.mightytextadventure.ui.Display;
 import com.codecool.mightytextadventure.ui.InputInteger;
 import com.codecool.mightytextadventure.ui.InputString;
-
 public class Game {
     private final Area[] areas;
     private final InputString inputString;
@@ -107,6 +106,11 @@ public class Game {
 
             if(areaChallengeComplete == false){
                 wrongAnswers++;
+                System.out.println("Thats wrong!  : /");
+
+            }
+            else {
+                System.out.println("Thats right! : )\n");
             }
             if(wrongAnswers == 2){
                 return false;

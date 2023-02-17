@@ -38,12 +38,12 @@ public class Area {
 
     public String getAnswersOptionsOne(){
 
-        String answers = " a:" + question1.answerA + "\n b:" +  question1.answerB + "\n c:" + question1.answerC;
+        String answers = " a) " + question1.answerA + "\n b) " +  question1.answerB + "\n c) " + question1.answerC;
             return answers;
     }
     public String getAnswersOptionsTwo(){
 
-        String answers = " a:" + question2.answerA + "\n b:" + question2.answerB + "\n c:" + question2.answerC;
+        String answers = " a) " + question2.answerA + "\n b) " + question2.answerB + "\n c) " + question2.answerC;
         return answers;
     }
 

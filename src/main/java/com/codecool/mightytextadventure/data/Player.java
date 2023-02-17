@@ -21,7 +21,7 @@ public class Player{
     }
     public void printBag(){
 
-        for(int i = 0; i< bag.size()-1 ; i++){
+        for(int i = 0; i< bag.size() ; i++){
             System.out.println(bag.get(i));
         }
         System.out.println("\n\n");
