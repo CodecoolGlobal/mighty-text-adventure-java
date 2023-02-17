@@ -5,18 +5,15 @@ public class Area {
     public String description;
     public String reward;
     private String welcomeTo;
-    private Question question1;
-    private Question question2;
-
-
-
+    private Question[] questions;
 
 
     public Area(String description, String welcomeTo, Question question1, Question question2,String reward) {
         this.welcomeTo =welcomeTo;
         this.description = description;
-        this.question1 = question1;
-        this.question2 = question2;
+        this.questions = new Question[2];
+        questions[0] = question1;
+        questions[1] = question2;
         this.reward = reward;
 
     }
@@ -27,32 +24,20 @@ public class Area {
         return welcomeTo;
     }
 
-    public String getQuestionOne(){
+    public String getQuestion(int index){
 
-        return question1.question;
+        return questions[index].question;
     }
-    public String getQuestionTwo(){
+    public String getAnswerOptions(int index){
 
-        return question2.question;
-    }
-
-    public String getAnswersOptionsOne(){
-
-        String answers = " a) " + question1.answerA + "\n b) " +  question1.answerB + "\n c) " + question1.answerC;
+        String answers = " a) " + questions[index].answerA + "\n b) " +  questions[index].answerB + "\n c) " + questions[index].answerC;
             return answers;
     }
-    public String getAnswersOptionsTwo(){
-
-        String answers = " a) " + question2.answerA + "\n b) " + question2.answerB + "\n c) " + question2.answerC;
-        return answers;
+    public boolean answerIsCorrect(String answer, int index){
+        return answer.toLowerCase().equals(questions[index].correctAnswer.toLowerCase());
     }
+    public Question [] getQuestions(){
 
-
-    public boolean answerOneIsCorrect(String answer){
-        return answer.toLowerCase().equals(question1.correctAnswer.toLowerCase());
+        return questions;
     }
-    public boolean answerTwoIsCorrect(String answer){
-        return answer.toLowerCase().equals(question2.correctAnswer.toLowerCase());
-    }
-
 }
