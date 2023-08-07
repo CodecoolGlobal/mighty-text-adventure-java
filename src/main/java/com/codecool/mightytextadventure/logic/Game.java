@@ -35,7 +35,7 @@ public class Game {
            action.setPlayerName(player);
            action.chooseRouteToTravel(player);
            action.travelling(player);
-           action.arrivedToDestionation(player);
+           action.arrivedToDestination(player);
 
         }
 
