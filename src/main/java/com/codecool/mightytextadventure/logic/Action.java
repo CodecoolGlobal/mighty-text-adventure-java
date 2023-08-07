@@ -7,15 +7,6 @@ import com.codecool.mightytextadventure.ui.InputInteger;
 import com.codecool.mightytextadventure.ui.InputString;
 
 public class Action {
-
-    public Action(InputInteger inputInteger,InputString inputString,Area[] areas, Route route){
-        this.inputInteger = inputInteger;
-        this.inputString = inputString;
-        this.areas = areas;
-        this.route = route;
-
-
-    }
     private final Area[] areas;
     private final InputString inputString;
     private final InputInteger inputInteger;
@@ -24,42 +15,50 @@ public class Action {
 
     boolean areaChallengeCompleted = false;
 
-public boolean travelling(Player player){
-    for(int i = 0;i< route.countries.length;i++){
+    public Action(InputInteger inputInteger, InputString inputString, Area[] areas, Route route) {
+        this.inputInteger = inputInteger;
+        this.inputString = inputString;
+        this.areas = areas;
+        this.route = route;
 
-        areaChallengeCompleted = areaChallenge(route.countries[i],player);
-        if(!areaChallengeCompleted){
-            printGameOver();
-            System.out.println("Do you like to play again?");
-            isRunning =  playAgain(inputString.getInputFromUser());
-            break;
+
+    }
+
+    public boolean travelling(Player player) {
+        for (int i = 0; i < route.countries.length; i++) {
+            areaChallengeCompleted = areaChallenge(route.countries[i], player);
+            if (!areaChallengeCompleted) {
+                printGameOver();
+                System.out.println("Do you like to play again?");
+                isRunning = playAgain(inputString.getInputFromUser());
+                break;
+            }
         }
+        return isRunning;
     }
-    return isRunning;
-}
-public boolean arrivedToDestionation(Player player){
 
-    if(areaChallengeCompleted){
-        printWelcomeToHoliday();
-        System.out.println("Congratulation you have collected a lot of great things!\n");
-        player.printBag();
-        System.out.println("Do you like to play again? Then enter yes!");
-       isRunning =  playAgain(inputString.getInputFromUser());
+    public boolean arrivedToDestination(Player player) {
+        if (areaChallengeCompleted) {
+            printWelcomeToHoliday();
+            System.out.println("Congratulation you have collected a lot of great things!\n");
+            player.printBag();
+            System.out.println("Do you like to play again? Then enter yes!");
+            isRunning = playAgain(inputString.getInputFromUser());
+        }
+        return isRunning;
+
     }
-    return isRunning;
 
-}
     public void chooseRouteToTravel(Player player) {
-
         System.out.println(player.getName() + " choose where u like to travel:");
-        for (int i = 0;i < areas.length; i++) {
-            if(i==0){
+        for (int i = 0; i < areas.length; i++) {
+            if (i == 0) {
                 System.out.println();
                 continue;
             }
-            System.out.println("          " + (i) + ":  " + areas[i].description() +"      ");
+            System.out.println("          " + (i) + ":  " + areas[i].description() + "      ");
         }
-        route = getChosenRoute(inputInteger.getInputFromUser()-1);
+        route = getChosenRoute(inputInteger.getInputFromUser() - 1);
 
     }
 
@@ -70,38 +69,37 @@ public boolean arrivedToDestionation(Player player){
         player.setName(inputString.getInputFromUser());
     }
 
-    private boolean areaChallenge(int areaIndex,Player player){
+    private boolean areaChallenge(int areaIndex, Player player) {
 
-        boolean areaChallengeComplete = false;
-        int wrongAnswers = 0;
+        boolean areaChallengeComplete;
+        int wrongAnswers;
 
-        for(int i =0; i < areas[areaIndex].getQuestions().length;i++){
+        for (int i = 0; i < areas[areaIndex].getQuestions().length; i++) {
             areaChallengeComplete = false;
             wrongAnswers = 0;
 
-            while(!areaChallengeComplete) {
+            while (!areaChallengeComplete) {
 
                 System.out.println(areas[areaIndex].getWelcomeTo());
                 System.out.println(areas[areaIndex].getQuestion(i));
                 System.out.println(areas[areaIndex].getAnswerOptions(i));
-                areaChallengeComplete =  areas[areaIndex].answerIsCorrect(inputString.getInputFromUser(),i);
+                areaChallengeComplete = areas[areaIndex].answerIsCorrect(inputString.getInputFromUser(), i);
                 System.out.println("\n");
 
-                if(areaChallengeComplete == false){
-                    System.out.println("Thats wrong!  : /\n");
+                if (!areaChallengeComplete) {
+                    System.out.println("That's wrong!  : /\n");
                     wrongAnswers++;
+                } else {
+                    System.out.println("That's right! : )\n");
                 }
-                else {
-                    System.out.println("Thats right! : )\n");
-                }
-                if(wrongAnswers == 2){
+                if (wrongAnswers == 2) {
                     return false;
                 }
 
             }
         }
 
-        System.out.println("Congratulation you get a reward for the challenge: " + areas[areaIndex].reward );
+        System.out.println("Congratulation you get a reward for the challenge: " + areas[areaIndex].reward);
         player.addItemToBag(areas[areaIndex].reward);
 
 
@@ -109,66 +107,71 @@ public boolean arrivedToDestionation(Player player){
     }
 
     private boolean playAgain(String answer) {
-
-        if(answer.toLowerCase().equals("yes".toLowerCase())){
-            return true;
-        }
-
-        return false;
+        return answer.equalsIgnoreCase("yes");
     }
 
-    private void printWelcomeToHoliday(){
-        System.out.println("\n" +
-                "███████╗███╗░░██╗░░░░░██╗░█████╗░██╗░░░██╗  ██╗░░░██╗░█████╗░██╗░░░██╗██████╗░\n" +
-                "██╔════╝████╗░██║░░░░░██║██╔══██╗╚██╗░██╔╝  ╚██╗░██╔╝██╔══██╗██║░░░██║██╔══██╗\n" +
-                "█████╗░░██╔██╗██║░░░░░██║██║░░██║░╚████╔╝░  ░╚████╔╝░██║░░██║██║░░░██║██████╔╝\n" +
-                "██╔══╝░░██║╚████║██╗░░██║██║░░██║░░╚██╔╝░░  ░░╚██╔╝░░██║░░██║██║░░░██║██╔══██╗\n" +
-                "███████╗██║░╚███║╚█████╔╝╚█████╔╝░░░██║░░░  ░░░██║░░░╚█████╔╝╚██████╔╝██║░░██║\n" +
-                "╚══════╝╚═╝░░╚══╝░╚════╝░░╚════╝░░░░╚═╝░░░  ░░░╚═╝░░░░╚════╝░░╚═════╝░╚═╝░░╚═╝\n" +
-                "\n" +
-                "            ██╗░░██╗░█████╗░██╗░░░░░██╗██████╗░░█████╗░██╗░░░██╗\n" +
-                "            ██║░░██║██╔══██╗██║░░░░░██║██╔══██╗██╔══██╗╚██╗░██╔╝\n" +
-                "            ███████║██║░░██║██║░░░░░██║██║░░██║███████║░╚████╔╝░\n" +
-                "            ██╔══██║██║░░██║██║░░░░░██║██║░░██║██╔══██║░░╚██╔╝░░\n" +
-                "            ██║░░██║╚█████╔╝███████╗██║██████╔╝██║░░██║░░░██║░░░\n" +
-                "            ╚═╝░░╚═╝░╚════╝░╚══════╝╚═╝╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░\n\n");
+    private void printWelcomeToHoliday() {
+        System.out.println("""
+
+                ███████╗███╗░░██╗░░░░░██╗░█████╗░██╗░░░██╗  ██╗░░░██╗░█████╗░██╗░░░██╗██████╗░
+                ██╔════╝████╗░██║░░░░░██║██╔══██╗╚██╗░██╔╝  ╚██╗░██╔╝██╔══██╗██║░░░██║██╔══██╗
+                █████╗░░██╔██╗██║░░░░░██║██║░░██║░╚████╔╝░  ░╚████╔╝░██║░░██║██║░░░██║██████╔╝
+                ██╔══╝░░██║╚████║██╗░░██║██║░░██║░░╚██╔╝░░  ░░╚██╔╝░░██║░░██║██║░░░██║██╔══██╗
+                ███████╗██║░╚███║╚█████╔╝╚█████╔╝░░░██║░░░  ░░░██║░░░╚█████╔╝╚██████╔╝██║░░██║
+                ╚══════╝╚═╝░░╚══╝░╚════╝░░╚════╝░░░░╚═╝░░░  ░░░╚═╝░░░░╚════╝░░╚═════╝░╚═╝░░╚═╝
+
+                            ██╗░░██╗░█████╗░██╗░░░░░██╗██████╗░░█████╗░██╗░░░██╗
+                            ██║░░██║██╔══██╗██║░░░░░██║██╔══██╗██╔══██╗╚██╗░██╔╝
+                            ███████║██║░░██║██║░░░░░██║██║░░██║███████║░╚████╔╝░
+                            ██╔══██║██║░░██║██║░░░░░██║██║░░██║██╔══██║░░╚██╔╝░░
+                            ██║░░██║╚█████╔╝███████╗██║██████╔╝██║░░██║░░░██║░░░
+                            ╚═╝░░╚═╝░╚════╝░╚══════╝╚═╝╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░
+
+                """);
     }
 
-    private void printGameOver(){
+    private void printGameOver() {
 
-        System.out.println("\n" +
-                "              ░██████╗░░█████╗░███╗░░░███╗███████╗  ░█████╗░██╗░░░██╗███████╗██████╗░\n" +
-                "              ██╔════╝░██╔══██╗████╗░████║██╔════╝  ██╔══██╗██║░░░██║██╔════╝██╔══██╗\n" +
-                "              ██║░░██╗░███████║██╔████╔██║█████╗░░  ██║░░██║╚██╗░██╔╝█████╗░░██████╔╝\n" +
-                "              ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░  ██║░░██║░╚████╔╝░██╔══╝░░██╔══██╗\n" +
-                "              ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗  ╚█████╔╝░░╚██╔╝░░███████╗██║░░██║\n" +
-                "              ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝\n\n");
-    }
-    private void printWelcomeToGame(){
-        System.out.println("\n" +
-                "                ░█████╗░██████╗░██╗░░░██╗███████╗███╗░░██╗████████╗██╗░░░██╗██████╗░███████╗\n" +
-                "                ██╔══██╗██╔══██╗██║░░░██║██╔════╝████╗░██║╚══██╔══╝██║░░░██║██╔══██╗██╔════╝\n" +
-                "                ███████║██║░░██║╚██╗░██╔╝█████╗░░██╔██╗██║░░░██║░░░██║░░░██║██████╔╝█████╗░░\n" +
-                "                ██╔══██║██║░░██║░╚████╔╝░██╔══╝░░██║╚████║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░\n" +
-                "                ██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗\n" +
-                "                ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝\n" +
-                "\n" +
-                "████████╗██╗░░██╗██████╗░░█████╗░██╗░░░██╗░██████╗░██╗░░██╗  ███████╗██╗░░░██╗██████╗░░█████╗░██████╗░███████╗\n" +
-                "╚══██╔══╝██║░░██║██╔══██╗██╔══██╗██║░░░██║██╔════╝░██║░░██║  ██╔════╝██║░░░██║██╔══██╗██╔══██╗██╔══██╗██╔════╝\n" +
-                "░░░██║░░░███████║██████╔╝██║░░██║██║░░░██║██║░░██╗░███████║  █████╗░░██║░░░██║██████╔╝██║░░██║██████╔╝█████╗░░\n" +
-                "░░░██║░░░██╔══██║██╔══██╗██║░░██║██║░░░██║██║░░╚██╗██╔══██║  ██╔══╝░░██║░░░██║██╔══██╗██║░░██║██╔═══╝░██╔══╝░░\n" +
-                "░░░██║░░░██║░░██║██║░░██║╚█████╔╝╚██████╔╝╚██████╔╝██║░░██║  ███████╗╚██████╔╝██║░░██║╚█████╔╝██║░░░░░███████╗\n" +
-                "░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚═════╝░░╚═════╝░╚═╝░░╚═╝  ╚══════╝░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚══════╝\n\n");
+        System.out.println("""
+
+                              ░██████╗░░█████╗░███╗░░░███╗███████╗  ░█████╗░██╗░░░██╗███████╗██████╗░
+                              ██╔════╝░██╔══██╗████╗░████║██╔════╝  ██╔══██╗██║░░░██║██╔════╝██╔══██╗
+                              ██║░░██╗░███████║██╔████╔██║█████╗░░  ██║░░██║╚██╗░██╔╝█████╗░░██████╔╝
+                              ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░  ██║░░██║░╚████╔╝░██╔══╝░░██╔══██╗
+                              ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗  ╚█████╔╝░░╚██╔╝░░███████╗██║░░██║
+                              ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░╚════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝
+
+                """);
     }
 
-    public Route getChosenRoute(int routeIndex){
+    private void printWelcomeToGame() {
+        System.out.println("""
+
+                                ░█████╗░██████╗░██╗░░░██╗███████╗███╗░░██╗████████╗██╗░░░██╗██████╗░███████╗
+                                ██╔══██╗██╔══██╗██║░░░██║██╔════╝████╗░██║╚══██╔══╝██║░░░██║██╔══██╗██╔════╝
+                                ███████║██║░░██║╚██╗░██╔╝█████╗░░██╔██╗██║░░░██║░░░██║░░░██║██████╔╝█████╗░░
+                                ██╔══██║██║░░██║░╚████╔╝░██╔══╝░░██║╚████║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░
+                                ██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗
+                                ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝
+
+                ████████╗██╗░░██╗██████╗░░█████╗░██╗░░░██╗░██████╗░██╗░░██╗  ███████╗██╗░░░██╗██████╗░░█████╗░██████╗░███████╗
+                ╚══██╔══╝██║░░██║██╔══██╗██╔══██╗██║░░░██║██╔════╝░██║░░██║  ██╔════╝██║░░░██║██╔══██╗██╔══██╗██╔══██╗██╔════╝
+                ░░░██║░░░███████║██████╔╝██║░░██║██║░░░██║██║░░██╗░███████║  █████╗░░██║░░░██║██████╔╝██║░░██║██████╔╝█████╗░░
+                ░░░██║░░░██╔══██║██╔══██╗██║░░██║██║░░░██║██║░░╚██╗██╔══██║  ██╔══╝░░██║░░░██║██╔══██╗██║░░██║██╔═══╝░██╔══╝░░
+                ░░░██║░░░██║░░██║██║░░██║╚█████╔╝╚██████╔╝╚██████╔╝██║░░██║  ███████╗╚██████╔╝██║░░██║╚█████╔╝██║░░░░░███████╗
+                ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚═════╝░░╚═════╝░╚═╝░░╚═╝  ╚══════╝░╚═════╝░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚══════╝
+
+                """);
+    }
+
+    public Route getChosenRoute(int routeIndex) {
         Route[] allRoutes = new Route[5];
 
-        Route routeToHungary = new Route(new int []{0,1});
-        Route routeToSerbia = new Route(new int[]{0,1,2});
-        Route routeToSwiss = new Route(new int [] {0,3});
-        Route routeToFrance = new Route(new int [] {0,3,4});
-        Route routeToSpain = new Route(new int[]{0,3,4,5});
+        Route routeToHungary = new Route(new int[]{0, 1});
+        Route routeToSerbia = new Route(new int[]{0, 1, 2});
+        Route routeToSwiss = new Route(new int[]{0, 3});
+        Route routeToFrance = new Route(new int[]{0, 3, 4});
+        Route routeToSpain = new Route(new int[]{0, 3, 4, 5});
 
         allRoutes[0] = routeToHungary;
         allRoutes[1] = routeToSerbia;
